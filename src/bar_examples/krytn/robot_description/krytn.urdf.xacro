@@ -1,55 +1,38 @@
 <?xml version='1.0' encoding='utf-8'?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="krytn" encoding='UTF-8'>
 
-  <!-- Import and add robot components -->
+  <!-- Import macro definitions -->
   <xacro:include filename="$(find magni_description)/urdf/magni.urdf.xacro" />
   <xacro:include filename="$(find sensors)/realsense_d435/realsense.urdf.xacro" />
+  <!-- CORRECTED INCLUDE PATH FOR LIDAR -->
   <xacro:include filename="$(find sensors)/lidar_2d/lidar_2d.urdf.xacro" />
+  <xacro:include filename="$(find krytn)/robot_description/krytn.gz.xacro" />
 
+  <!-- Instantiate the Magni base -->
+  <xacro:magni_robot_base_definition/>
+
+  <link name="base_footprint"/>
+  <joint name="base_footprint_to_base_link_joint" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+    <origin xyz="0 0 ${0.1}" rpy="0 0 0"/>
+    <!-- Assumes Magni wheel_r is 0.1 -->
+  </joint>
+
+  <!-- Instantiate the sensors, attaching to 'base_link' (which comes from Magni) -->
   <xacro:realsense world_link_name="base_link">
-    <origin xyz="0 0 0.3" rpy="0 0 0" />
+    <origin xyz="0.15 0 0.25" rpy="0 0 0" />
   </xacro:realsense>
 
   <xacro:lidar_2d world_link_name="base_link">
-    <origin xyz="0 0 0.15" rpy="0 0 0" />
+    <origin xyz="0.20 0 0.15" rpy="0 0 0" />
   </xacro:lidar_2d>
 
-<!-- krytn_tray link-->
-  <link name="krytn_tray">
-    <visual>
-      <!--Krytn_tray_part/Body.-->
-      <origin rpy="0.0 -0.0 0.0" xyz="0.0 0.0 0.0"/>
-      <geometry>
-        <mesh filename="package://krytn_tray/meshes/krytn_tray_ex_Body.dae"/>
-      </geometry>
-    </visual>
-    <collision>
-      <!--Krytn_tray_part/Body.-->
-      <origin rpy="0.0 -0.0 0.0" xyz="0.0 0.0 0.0"/>
-      <geometry>
-        <mesh filename="package://krytn_tray/meshes/krytn_tray_ex_Body.dae"/>
-      </geometry>
-    </collision>
-    
-    <xacro:box_inertial_with_origin x="0.400" y="0.280" z="0.220" mass="1.0">
-      <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
-    </xacro:box_inertial_with_origin> 
-
-  </link>
-  <!-- tray_joint-->
- <joint name="krytn_joint" type="fixed">
-    <parent link="base_link"/>
-    <child link="krytn_tray"/>
-    <origin rpy="0.0 -0.0 0.0" xyz="0.052 0.0 0.264"/>
-  </joint>
-
-  <!-- Configure Control of Joints -->
-  <ros2_control name="Krytn" type="system">
-
+  <!-- ros2_control setup for Krytn (using Magni's joints) -->
+  <ros2_control name="KrytnControlSystem" type="system">
     <hardware>
       <plugin>gz_ros2_control/GazeboSimSystem</plugin>
     </hardware>
-
     <joint name="left_wheel_joint">
       <command_interface name="velocity">
         <param name="min">-10</param>
@@ -57,22 +40,19 @@
       </command_interface>
       <state_interface name="position"/>
       <state_interface name="velocity"/>
-      <state_interface name="effort" />
+      <state_interface name="effort"/>
     </joint>
-
     <joint name="right_wheel_joint">
       <command_interface name="velocity">
         <param name="min">-10</param>
         <param name="max">10</param>
       </command_interface>
-
       <state_interface name="position"/>
       <state_interface name="velocity"/>
-      <state_interface name="effort" />
+      <state_interface name="effort"/>
     </joint>
   </ros2_control>
 
-  <!-- Setup Gazebo plugins -->
   <gazebo>
     <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
       <ros>
@@ -81,11 +61,5 @@
       </ros>
       <parameters>$(find krytn)/config/diffdrive_control.yaml</parameters>
     </plugin>
-
-
-    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
-      <render_engine>ogre2</render_engine>
-    </plugin>
   </gazebo>
-
 </robot>

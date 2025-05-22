@@ -1,0 +1,5 @@
+<!-- This file should ONLY contain elements to be included -->
+<gazebo reference="base_link"
+    xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <material>Gazebo/Grey</material>
+</gazebo>

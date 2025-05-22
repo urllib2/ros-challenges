@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="test_robot">
+    <!-- Directly include the file that DEFINES the macro -->
+    <xacro:include filename="$(find magni_description)/urdf/magni.urdf.xacro" />
+    <!-- Then CALL the macro -->
+    <xacro:magni_robot_base_definition/>
+</robot>

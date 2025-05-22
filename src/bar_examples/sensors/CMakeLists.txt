@@ -1,3 +1,4 @@
+
 cmake_minimum_required(VERSION 3.8)
 project(sensors)
 
@@ -10,22 +11,20 @@ find_package(ament_cmake_auto REQUIRED)
 
 ament_auto_find_build_dependencies()
 
-
-ament_auto_package(
-  INSTALL_TO_SHARE     
-    realsense_d435
-    lidar_2d
-) 
-
-
-install(DIRECTORY
-  DESTINATION
-  share/${PROJECT_NAME}/models/${PROJECT_NAME}
+# This installs the contents of the 'realsense_d435' source directory
+# (e.g., src/sensors/realsense_d435/)
+# into 'install/sensors/share/sensors/realsense_d435/'
+install(
+    DIRECTORY realsense_d435/
+    DESTINATION share/${PROJECT_NAME}/realsense_d435
 )
-# Create symlink to meshes folder, otherwise RVIz won't find the model
-install(CODE "execute_process( \
-    COMMAND ${CMAKE_COMMAND} -E create_symlink \
-    ${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME}/meshes \
-    ${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME}/models/${PROJECT_NAME}/meshes  \
-    )"
+
+# This installs the contents of the 'lidar_2d' source directory
+# (e.g., src/sensors/lidar_2d/, which should contain an 'urdf' subfolder)
+# into 'install/sensors/share/sensors/lidar_2d/'
+install(
+    DIRECTORY lidar_2d/
+    DESTINATION share/${PROJECT_NAME}/lidar_2d
 )
+
+ament_package()
