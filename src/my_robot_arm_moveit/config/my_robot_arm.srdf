@@ -32,16 +32,14 @@
         <joint name="ur5_wrist_2_joint" value="1.5707"/>
         <joint name="ur5_wrist_3_joint" value="3.1415"/>
     </group_state>
-
     <group_state name="Approach" group="arm">
-        <joint name="ur5_shoulder_pan_joint" value="0.4080"/>
-        <joint name="ur5_shoulder_lift_joint" value="0.2496"/>
-        <joint name="ur5_elbow_joint" value="-0.9990"/>
-        <joint name="ur5_wrist_1_joint" value="-2.4071"/>
-        <joint name="ur5_wrist_2_joint" value="-0.3955"/>
-        <joint name="ur5_wrist_3_joint" value="0.0101"/>
-    </group_state>
-
+        <joint name="ur5_elbow_joint" value="-1.780584"/>
+        <joint name="ur5_shoulder_lift_joint" value="-0.135098"/>
+        <joint name="ur5_shoulder_pan_joint" value="0.000010"/>
+        <joint name="ur5_wrist_1_joint" value="1.749989"/>
+        <joint name="ur5_wrist_2_joint" value="-0.000059"/>
+        <joint name="ur5_wrist_3_joint" value="0.166028"/>
+    </group_state>    
     <group_state name="Open" group="gripper">
         <joint name="finger_joint" value="-0.005"/>
     </group_state>

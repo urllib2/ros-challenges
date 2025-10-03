@@ -6,7 +6,7 @@
   <xacro:include filename="$(find sensors)/realsense_d435/realsense.urdf.xacro" />
 
   <xacro:realsense world_link_name="world">
-    <origin xyz="0 1.0 1.2" rpy="0 ${pi/4} -${pi/2}" />
+    <origin xyz="0 -3.0 1.8" rpy="0 ${3*pi/4} -${pi/2}" />
   </xacro:realsense>
 
   <!-- Include a UR05 -->
@@ -44,7 +44,7 @@
     50mm radius 150mm height 1.0kg, offset by -50mm in y, rotated 90deg in roll-->
     <xacro:cylinder_inertial_with_origin radius="0.05" length="0.15" mass="1.0">
       <origin xyz="0 -0.05 0" rpy="${pi/2} 0 0" />
-    </xacro:cylinder_inertial_with_origin>
+    </xacro:cylinder_inertial_with_origin> 
 
   </link>
   <link name="finger_link">
@@ -149,6 +149,10 @@
   <gazebo>
     <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
       <parameters>$(find my_robot_arm)/config/ros2_control.yaml</parameters>
+    </plugin>
+
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
     </plugin>
   </gazebo>
 
